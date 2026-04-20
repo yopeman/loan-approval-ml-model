@@ -121,8 +121,75 @@
             margin-bottom: 0.5rem;
         }
 
+        .sample-data {
+            padding: 2.5rem;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .sample-data h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+        }
+
+        .sample-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .sample-list {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .sample-list h3 {
+            margin-bottom: 1rem;
+            text-align: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .sample-list.approved h3 {
+            color: #38a169;
+            border-color: #c6f6d5;
+        }
+
+        .sample-list.rejected h3 {
+            color: #e53e3e;
+            border-color: #fed7d7;
+        }
+
+        .sample-item {
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .sample-item:hover {
+            background: #edf2f7;
+            transform: translateX(5px);
+        }
+
+        .sample-item.approved-item:hover {
+            border-color: #68d391;
+            background: #f0fff4;
+        }
+
+        .sample-item.rejected-item:hover {
+            border-color: #fc8181;
+            background: #fff5f5;
+        }
+
         @media (max-width: 768px) {
-            .form-grid {
+            .form-grid, .sample-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -130,7 +197,7 @@
                 padding: 1rem;
             }
             
-            .form-container {
+            .form-container, .sample-data {
                 padding: 1.5rem;
             }
         }
@@ -214,11 +281,93 @@
                         <p id="confidenceText"></p>
                     </div>
                 </div>
+                </div>
             </form>
+        </div>
+
+        <br><br><br>
+
+        <div class="sample-data">
+            <h2>Test with Sample Data</h2>
+            <div class="sample-grid">
+                <div class="sample-list approved" id="approvedSamples">
+                    <h3>Approved Samples</h3>
+                </div>
+                <div class="sample-list rejected" id="rejectedSamples">
+                    <h3>Rejected Samples</h3>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        const samples = {
+            approved: [
+                { dependents: 2, edu: ' Graduate', emp: ' No', inc: 9600000, amt: 29900000, term: 12, cibil: 778, res: 2400000, com: 17600000, lux: 22700000, bank: 8000000 },
+                { dependents: 5, edu: ' Graduate', emp: ' No', inc: 8700000, amt: 33000000, term: 4, cibil: 678, res: 22500000, com: 14800000, lux: 29200000, bank: 4300000 },
+                { dependents: 0, edu: ' Graduate', emp: ' Yes', inc: 800000, amt: 2200000, term: 20, cibil: 782, res: 1300000, com: 800000, lux: 2800000, bank: 600000 },
+                { dependents: 4, edu: ' Graduate', emp: ' Yes', inc: 2900000, amt: 11200000, term: 2, cibil: 547, res: 8100000, com: 4700000, lux: 9500000, bank: 3100000 },
+                { dependents: 2, edu: ' Graduate', emp: ' Yes', inc: 9100000, amt: 31500000, term: 14, cibil: 679, res: 10800000, com: 16600000, lux: 20900000, bank: 5000000 }
+            ],
+            rejected: [
+                { dependents: 0, edu: ' Not Graduate', emp: ' Yes', inc: 4100000, amt: 12200000, term: 8, cibil: 417, res: 2700000, com: 2200000, lux: 8800000, bank: 3300000 },
+                { dependents: 3, edu: ' Graduate', emp: ' No', inc: 9100000, amt: 29700000, term: 20, cibil: 506, res: 7100000, com: 4500000, lux: 33300000, bank: 12800000 },
+                { dependents: 3, edu: ' Graduate', emp: ' No', inc: 8200000, amt: 30700000, term: 8, cibil: 467, res: 18200000, com: 3300000, lux: 23300000, bank: 7900000 },
+                { dependents: 5, edu: ' Not Graduate', emp: ' Yes', inc: 9800000, amt: 24200000, term: 20, cibil: 382, res: 12400000, com: 8200000, lux: 29400000, bank: 5000000 },
+                { dependents: 0, edu: ' Graduate', emp: ' Yes', inc: 4800000, amt: 13500000, term: 10, cibil: 319, res: 6800000, com: 8300000, lux: 13700000, bank: 5100000 }
+            ]
+        };
+
+        function fillForm(data) {
+            document.querySelector('[name="no_of_dependents"]').value = data.dependents;
+            document.querySelector('[name="education"]').value = data.edu;
+            document.querySelector('[name="self_employed"]').value = data.emp;
+            document.querySelector('[name="income_annum"]').value = data.inc;
+            document.querySelector('[name="loan_amount"]').value = data.amt;
+            document.querySelector('[name="loan_term"]').value = data.term;
+            document.querySelector('[name="cibil_score"]').value = data.cibil;
+            document.querySelector('[name="residential_assets_value"]').value = data.res;
+            document.querySelector('[name="commercial_assets_value"]').value = data.com;
+            document.querySelector('[name="luxury_assets_value"]').value = data.lux;
+            document.querySelector('[name="bank_asset_value"]').value = data.bank;
+
+            // Scroll to form and highlight
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Highlight inputs briefly
+            const inputs = document.querySelectorAll('.form-group input, .form-group select');
+            inputs.forEach(input => {
+                input.style.borderColor = '#68d391';
+                setTimeout(() => {
+                    input.style.borderColor = '';
+                }, 1000);
+            });
+        }
+
+        function createSampleElements() {
+            const approvedContainer = document.getElementById('approvedSamples');
+            const rejectedContainer = document.getElementById('rejectedSamples');
+
+            samples.approved.forEach((sample, index) => {
+                const div = document.createElement('div');
+                div.className = 'sample-item approved-item';
+                div.innerHTML = `Sample ${index + 1} (Inc: ₹${(sample.inc / 100000).toFixed(1)}L, CIBIL: ${sample.cibil})`;
+                div.onclick = () => fillForm(sample);
+                approvedContainer.appendChild(div);
+            });
+
+            samples.rejected.forEach((sample, index) => {
+                const div = document.createElement('div');
+                div.className = 'sample-item rejected-item';
+                div.innerHTML = `Sample ${index + 1} (Inc: ₹${(sample.inc / 100000).toFixed(1)}L, CIBIL: ${sample.cibil})`;
+                div.onclick = () => fillForm(sample);
+                rejectedContainer.appendChild(div);
+            });
+        }
+
+        // Initialize samples on load
+        createSampleElements();
+
         document.getElementById('loanForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
