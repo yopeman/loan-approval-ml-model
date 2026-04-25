@@ -15,10 +15,11 @@ def predict():
         else:
             data = request.form
 
-
-        prediction, confidence = predict_loan(data)
+        prediction, probability = predict_loan(data)
         result = "Approved" if prediction == 0 else "Rejected"
-        status = result.lower()        
+        status = result.lower()
+
+        confidence = round(float(probability[prediction]) * 100, 2)
         
         return jsonify({
             'success': True,
