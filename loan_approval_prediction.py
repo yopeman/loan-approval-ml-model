@@ -3,7 +3,7 @@
 # Import Required Libraries
 
 import pandas as pd
-import numpy as np
+# import numpy as np
 import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -13,8 +13,12 @@ from sklearn.metrics import classification_report, confusion_matrix
 
 # Load the Dataset
 
-data = pd.read_csv(r"./loan_approval_dataset.csv") #Update with your path
+data = pd.read_csv(r"./loan_approval_dataset.csv")
 data.columns = data.columns.str.strip().str.lower()
+
+# Strip leading/trailing spaces from string values in all object columns
+for col in data.select_dtypes(include=['object']).columns:
+    data[col] = data[col].astype(str).str.strip()
 
 # Display first few rows
 print(data.head())
